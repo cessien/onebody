@@ -4,7 +4,7 @@ class Signup
   include ActiveModel::Naming
   include ActiveModel::Validations
 
-  PARAMS = [:email, :password, :password_confirmation, :first_name, :last_name, :gender, :birthday, :mobile_phone, :a_phone_number]
+  PARAMS = [:email, :password, :password_confirmation, :first_name, :last_name, :gender, :birthday, :mobile_phone, :a_phone_number, :description, :anniversary, :medical_notes]
 
   attr_accessor *PARAMS
   attr_accessor :family, :person

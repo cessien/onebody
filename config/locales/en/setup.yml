@@ -16,3 +16,35 @@ en:
     password: "Password"
     password_confirmation: "Confirm Password"
     submit_button_html: "Save Changes"
+ 
+    wizard:   
+      lets_get_started: "Let's get started!"
+      basic_information: "Basic Information"
+      question_whats_your_name: "What's your name?"
+      tell_us_more_about_you: "Tell us more about you."
+      question_whats_a_one_or_two_word_description: "What's a one or two word description about you?"
+      question_when_were_you_born: "When were you born?"
+      question_are_you_married: "Are you married?"
+      question_do_you_have_any_allerigies: "Do you have any allergies?"
+    
+      contact_information: "Contact Information"
+      question_how_may_we_best_contact_you: "How may we best contact you?"
+      question_whats_your_email_address: "What's your email address?"
+      question_whats_your_phone_number: "What's your phone number?"
+      question_where_do_you_live: "Where do you live?"
+      
+      family_and_relationships: "Family & Relationships"
+      question_do_you_have_family_here: "Do you have family here?"
+
+      groups_and_communities: "Groups & Communities"
+      groups_and_communities_header: "Let's join some groups!"
+
+      social_profile: "Social profile"
+      question_would_you_like_to_upload_a_profile_picture: "Would you like to upload a profile picture?"
+
+      privacy: "Privacy"
+      privacy_settings: "Privacy Settings"
+
+      finished: "Finished!"
+      thanks_for_signing_up: "Thanks for signing up!"
+    

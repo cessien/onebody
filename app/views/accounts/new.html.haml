@@ -1,37 +1,48 @@
 = error_messages_for(@verification) if @verification
 
 - if Setting.get(:features, :sign_up)
+  %h1{ class: 'main-title' }= t('setup.wizard.lets_get_started')
+  -# Render the progress bar
+  %div{ class: 'row' }
+    %div{ class: 'col-md-12' }
+      %p{ class: 'one-label progress-bar-label active', onclick: "showStep(1)"}= t('setup.wizard.basic_information')
+      %p{ class: 'two-label progress-bar-label', onclick: "showStep(2)"}= t('setup.wizard.contact_information')
+      %p{ class: 'three-label progress-bar-label', onclick: "showStep(3)"}= t('setup.wizard.family_and_relationships')
+      %p{ class: 'four-label progress-bar-label', onclick: "showStep(4)"}= t('setup.wizard.groups_and_communities')
+      %p{ class: 'five-label progress-bar-label', onclick: "showStep(5)"}= t('setup.wizard.social_profile')
+      %p{ class: 'six-label progress-bar-label', onclick: "showStep(6)"}= t('setup.wizard.privacy')
+      %p{ class: 'seven-label progress-bar-label', onclick: "showStep(7)"}= t('setup.wizard.finished')
+    %div{ class: 'col-md-12' }
+      %div{ class: 'progress progress-thin no-color' }
+        %div{ class: 'one step no-color', onclick: "showStep(1)"}
+        %div{ class: 'two step no-color', onclick: "showStep(2)"}
+        %div{ class: 'three step no-color', onclick: "showStep(3)"}
+        %div{ class: 'four step no-color', onclick: "showStep(4)"}
+        %div{ class: 'five step no-color', onclick: "showStep(5)"}
+        %div{ class: 'six step no-color', onclick: "showStep(6)"}
+        %div{ class: 'seven step no-color', onclick: "showStep(7)"}
+        %div{ class: 'progress-bar primary-color', id: 'progress-bar', style: 'width: 1%;'}
 
-  %h2= t('accounts.create.heading')
-  = form_for @signup, as: :signup, url: account_path, method: 'post' do |form|
-    = error_messages_for(form)
-    %p
-      .form-group
-        = form.label :email
-        = form.text_field :email, class: 'form-control'
-      .form-group
-        = form.label :first_name
-        = form.text_field :first_name, class: 'form-control'
-      .form-group
-        = form.label :last_name
-        = form.text_field :last_name, class: 'form-control'
-      .form-group
-        = form.label :gender
-        = form.select :gender, [[t('search.male'), 'Male'], [t('search.female'), 'Female']], {include_blank: true}, class: 'form-control'
-      .form-group
-        = form.label :birthday
-        .input-group
-          .input-group-btn
-            %button{ type: 'button', class: 'btn btn-info date-picker-btn' }
-              = icon 'fa fa-calendar'
-          = form.date_field :birthday, class: 'form-control'
-      .form-group
-        = form.label :mobile_phone
-        = form.phone_field :mobile_phone, class: 'form-control'
-      .form-group
-        = form.text_field :a_phone_number, id: 'dummy_phone'
-        = form.button t('accounts.create.button'), class: 'btn btn-success'
-
+  %div{ class: 'row' }
+    %div{ class: 'col-md-8 col-md-offset-2' }
+      -#Hidden tab navigation to collect form data
+      %div{ class: 'tab-content'}
+        %div{ class: 'tab-pane active', id: 'step-one'}
+          = render partial: 'accounts/signup/basic_information'
+        %div{ class: 'tab-pane', id: 'step-two'}
+          = render partial: 'accounts/signup/contact_information'
+        %div{ class: 'tab-pane', id: 'step-three'}
+          = render partial: 'accounts/signup/family_and_relationships'
+        %div{ class: 'tab-pane', id: 'step-four'}
+          = render partial: 'accounts/signup/groups_and_communities'
+        %div{ class: 'tab-pane', id: 'step-five'}
+          = render partial: 'accounts/signup/social_profile'
+        %div{ class: 'tab-pane', id: 'step-six'}
+          = render partial: 'accounts/signup/privacy'
+        %div{ class: 'tab-pane', id: 'step-seven'}
+          = render partial: 'accounts/signup/finished'
+        %div{ class: 'tab-pane', id: 'step-simple-signup'}
+          = render partial: 'accounts/signup/simple_signup'
 - else
   %p= t('accounts.this_site_doesnt_allow_signup', office_phone: Setting.get(:contact, :community_office_phone))
 

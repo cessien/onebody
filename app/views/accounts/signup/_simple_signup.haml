@@ -1,0 +1,30 @@
+BASIC SIGNUP
+%h2= t('accounts.create.heading')
+= form_for @signup, as: :signup, url: account_path, method: 'post' do |form|
+  = error_messages_for(form)
+  %p
+    .form-group
+      = form.label :email
+      = form.text_field :email, class: 'form-control'
+    .form-group
+      = form.label :first_name
+      = form.text_field :first_name, class: 'form-control'
+    .form-group
+      = form.label :last_name
+      = form.text_field :last_name, class: 'form-control'
+    .form-group
+      = form.label :gender
+      = form.select :gender, [[t('search.male'), 'Male'], [t('search.female'), 'Female']], {include_blank: true}, class: 'form-control'
+    .form-group
+      = form.label :birthday
+      .input-group
+        .input-group-btn
+          %button{ type: 'button', class: 'btn btn-info date-picker-btn' }
+            = icon 'fa fa-calendar'
+        = form.date_field :birthday, class: 'form-control'
+    .form-group
+      = form.label :mobile_phone
+      = form.phone_field :mobile_phone, class: 'form-control'
+    .form-group
+      = form.text_field :a_phone_number, id: 'dummy_phone'
+      = form.button t('accounts.create.button'), class: 'btn btn-success'

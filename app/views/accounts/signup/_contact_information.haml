@@ -1,0 +1,16 @@
+%p{ class: 'form-title'}= t('setup.wizard.contact_information')
+= form_for @signup, as: :signup, url: account_path, method: 'post' do |form|
+  %h2= t('setup.wizard.question_how_may_we_best_contact_you')
+  %div{ class: 'row'}
+    .form-group{ class: 'col-md-6'}
+      %h3{ class: 'subtitle'}= t('setup.wizard.question_whats_your_email_address')
+      = form.label :email
+      = form.text_field :email, class: 'form-control'
+  %div{ class: 'row'}
+    .form-group
+      %h3{ class: 'subtitle'}= t('setup.wizard.question_whats_your_phone_number')
+      = form.label :mobile_phone
+      = form.phone_field :mobile_phone, class: 'form-control'
+  %div{ class: 'row'}
+    .form-group
+      %h3{ class: 'subtitle'}= t('setup.wizard.question_where_do_you_live')
