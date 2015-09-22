@@ -38,7 +38,7 @@
           = check_box_tag :restricted_folders, true, @show_restricted_folders, class: 'simple'
           = label_tag :restricted_folders, t('documents.index.restricted_folders.label', count: @restricted_folder_count)
 
-- if @folders.any? or @documents.any?
+- if @folders.any? or @documents.any? or @network_folders.any?
   - if @view == 'detail'
     = render 'details'
   - else

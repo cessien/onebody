@@ -5,6 +5,25 @@
     %th= t('documents.index.table.updated_at')
     %th= t('documents.index.table.size')
     %th
+  - @network_folders.each do |folder|
+    %tr.row-with-avatar
+      %td.icon
+        = link_to folder[:name], :class => 'text-yellow' do
+          = icon 'fa fa-hdd-o'
+      %td
+        = link_to folder[:name], :class => 'text-yellow' do
+          = folder[:name]
+          = icon('fa fa-lock', title: t('documents.restricted_folder.tooltip')) if folder[:restricted] == true
+      %td
+        = folder[:updated_at].to_s(:full)
+      %td
+        = t('documents.index.table.item_count', count: folder[:item_count])
+      %td.actions
+      %tr.description
+        %td
+        %td{ colspan: 4 }
+          %em.info
+            = folder[:description]
   - @folders.each do |folder|
     %tr.row-with-avatar{ class: folder.hidden? ? 'hidden-folder' : nil }
       %td.icon

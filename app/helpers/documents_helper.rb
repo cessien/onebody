@@ -28,4 +28,18 @@ module DocumentsHelper
       .map { |f| [f.path, f.id] }
   end
 
+  def filesystem_folders
+    DocumentFolder.new({
+      name: 'M Drive',
+      description: '',
+      hidden: false,
+      folder_id: nil,
+      parent_folder_ids: [],
+      path: '/',
+      created_at: DateTime.now,
+      updated_at: DateTime.now,
+      site_id: 1
+    })
+  end
+
 end

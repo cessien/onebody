@@ -4,6 +4,8 @@ class DocumentsController < ApplicationController
   before_action :persist_prefs, only: %(index)
 
   def index
+    #binding.remote_pry
+    @network_folders = filesystem_items('/vagrant/')
     @folders = (@parent_folder.try(:folders) || DocumentFolder.top).order(:name).includes(:groups)
     @folders = DocumentFolderAuthorizer.readable_by(@logged_in, @folders)
     if @logged_in.admin?(:manage_documents)
@@ -32,7 +34,6 @@ class DocumentsController < ApplicationController
   end
 
   def create
-    #binding.remote_pry
     if params[:folder]
       @folder = DocumentFolder.new(folder_params)
       if @folder.save
@@ -149,5 +150,23 @@ class DocumentsController < ApplicationController
     @show_restricted_folders = !@logged_in.admin?(:manage_documents) || cookies[:restricted_folders] == 'true'
     cookies[:hidden_folders] = params[:hidden_folders] if params[:hidden_folders].present?
     @show_hidden_folders = cookies[:hidden_folders] == 'true'
+  end
+
+  def filesystem_items (path)
+    files = Array.new()
+    Dir.foreach(path) do |item|
+      next if item == '.' or item == '..'
+      file = File.new item
+      files.concat([{
+        :name => item,
+        :description => 'This is an externally-mapped folder.',
+        :path => file.path,  
+	:updated_at => File.atime(item),
+        :restricted => true,
+        :item_count => 311,
+        :size => file.size,
+      }])
+    end
+    return files
   end
 end
