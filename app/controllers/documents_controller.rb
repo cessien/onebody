@@ -4,8 +4,11 @@ class DocumentsController < ApplicationController
   before_action :persist_prefs, only: %(index)
 
   def index
-    #binding.remote_pry
-    @network_folders = filesystem_items('/vagrant/')
+    if params[:network_folder] && (params[:folder_id].nil? || params[:folder_id] == 0)
+      @network_folders = filsystem_items
+    else
+      @network_folders = filesystem_items('/vagrant/')
+    end
     @folders = (@parent_folder.try(:folders) || DocumentFolder.top).order(:name).includes(:groups)
     @folders = DocumentFolderAuthorizer.readable_by(@logged_in, @folders)
     if @logged_in.admin?(:manage_documents)
@@ -165,6 +168,7 @@ class DocumentsController < ApplicationController
         :restricted => true,
         :item_count => 311,
         :size => file.size,
+	:type => :drive,
       }])
     end
     return files
