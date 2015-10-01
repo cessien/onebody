@@ -4,10 +4,13 @@ class DocumentsController < ApplicationController
   before_action :persist_prefs, only: %(index)
 
   def index
-    if params[:network_folder] && (params[:folder_id].nil? || params[:folder_id] == 0)
-      @network_folders = filsystem_items
+    if params[:network_folder]
+      @network_folders = filesystem_items params[:network_folder]
+      @hide_internal
+    elsif params[:network_folder].nil? && (params[:folder_id].nil? || params[:folder_id] == 0)
+      @network_folders = filesystem_items
     else
-      @network_folders = filesystem_items('/vagrant/')
+      @network_folders = []
     end
     @folders = (@parent_folder.try(:folders) || DocumentFolder.top).order(:name).includes(:groups)
     @folders = DocumentFolderAuthorizer.readable_by(@logged_in, @folders)
@@ -119,6 +122,43 @@ class DocumentsController < ApplicationController
     )
   end
 
+  def filesystem_items(path=nil)
+    files = Array.new()
+    toplevelmounts = [{:name => 'M Drive', :path =>'/mnt/m_drive'},{:name => 'Test', :path => '/vagrant'}]
+    if path.nil?
+      toplevelmounts.each do |item|
+	next if !Dir.exists? item[:path]
+        files.concat([{
+          :name => item[:name],
+          :description => 'This is an externally-mapped folder. You will only be able to retrieve files.',
+          :path => item[:path],  
+	  :icon => 'fa fa-hdd-o',
+          :updated_at => DateTime.now,
+          :restricted => true,
+          :item_count => Dir.entries(item[:path]).length - 2,
+	  :folder => true,
+        }])
+      end
+    else
+      Dir.foreach(path) do |item|
+        next if item == '.' or item == '..'
+	fullpath = "#{path}/#{item}"
+        file = File.new fullpath
+        files.concat([{
+          :name => item,
+          :description => '',
+          :path => fullpath,  
+	  :icon => File.directory?(item) ? 'fa fa-folder-o':'fa fa-file',
+          :updated_at => file.atime,
+          :restricted => true,
+          :item_count => File.directory?(item) ? Dir.entries(fullpath).length - 2: file.size,
+	  :folder => File.directory?(item),
+        }])
+      end
+    end
+    return files
+  end
+
   private
 
   def find_parent_folder
@@ -153,24 +193,5 @@ class DocumentsController < ApplicationController
     @show_restricted_folders = !@logged_in.admin?(:manage_documents) || cookies[:restricted_folders] == 'true'
     cookies[:hidden_folders] = params[:hidden_folders] if params[:hidden_folders].present?
     @show_hidden_folders = cookies[:hidden_folders] == 'true'
-  end
-
-  def filesystem_items (path)
-    files = Array.new()
-    Dir.foreach(path) do |item|
-      next if item == '.' or item == '..'
-      file = File.new item
-      files.concat([{
-        :name => item,
-        :description => 'This is an externally-mapped folder.',
-        :path => file.path,  
-	:updated_at => File.atime(item),
-        :restricted => true,
-        :item_count => 311,
-        :size => file.size,
-	:type => :drive,
-      }])
-    end
-    return files
   end
 end

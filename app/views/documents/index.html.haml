@@ -46,7 +46,7 @@
 - else
   %em= t('none')
 
-- if @logged_in.admin?(:manage_documents)
+- if @logged_in.admin?(:manage_documents) and !@network_folders.any?
   .page-controls.push-down
     - if @logged_in.admin?(:manage_documents) && @parent_folder
       .pull-right
