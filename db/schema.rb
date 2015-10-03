@@ -433,32 +433,25 @@ ActiveRecord::Schema.define(version: 20150917010613) do
     t.string   "work_phone",               limit: 25
     t.string   "fax",                      limit: 25
     t.datetime "birthday"
-    t.string   "email",                        limit: 255
-    t.boolean  "email_changed",                limit: 1,     default: false
-    t.string   "website",                      limit: 255
-    t.text     "classes",                      limit: 65535
-    t.string   "shepherd",                     limit: 255
-    t.string   "mail_group",                   limit: 1
-    t.string   "encrypted_password",           limit: 100
-    t.string   "business_name",                limit: 100
-    t.text     "business_description",         limit: 65535
-    t.string   "business_phone",               limit: 25
-    t.string   "business_email",               limit: 255
-    t.string   "business_website",             limit: 255
-    t.text     "activities",                   limit: 65535
-    t.text     "interests",                    limit: 65535
-    t.text     "music",                        limit: 65535
-    t.text     "tv_shows",                     limit: 65535
-    t.text     "movies",                       limit: 65535
-    t.text     "books",                        limit: 65535
-    t.text     "quotes",                       limit: 65535
-    t.text     "about",                        limit: 65535
-    t.text     "testimony",                    limit: 65535
-    t.boolean  "share_mobile_phone",           limit: 1,     default: false
-    t.boolean  "share_work_phone",             limit: 1,     default: false
-    t.boolean  "share_fax",                    limit: 1,     default: false
-    t.boolean  "share_email",                  limit: 1,     default: false
-    t.boolean  "share_birthday",               limit: 1,     default: true
+    t.string   "email",                    limit: 255
+    t.boolean  "email_changed",                          default: false
+    t.string   "website",                  limit: 255
+    t.text     "classes",                  limit: 65535
+    t.string   "shepherd",                 limit: 255
+    t.string   "mail_group",               limit: 1
+    t.string   "encrypted_password",       limit: 100
+    t.string   "business_name",            limit: 100
+    t.text     "business_description",     limit: 65535
+    t.string   "business_phone",           limit: 25
+    t.string   "business_email",           limit: 255
+    t.string   "business_website",         limit: 255
+    t.text     "about",                    limit: 65535
+    t.text     "testimony",                limit: 65535
+    t.boolean  "share_mobile_phone",                     default: false
+    t.boolean  "share_work_phone",                       default: false
+    t.boolean  "share_fax",                              default: false
+    t.boolean  "share_email",                            default: false
+    t.boolean  "share_birthday",                         default: true
     t.datetime "anniversary"
     t.datetime "updated_at"
     t.string   "alternate_email",          limit: 255
