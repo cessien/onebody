@@ -25,10 +25,6 @@ Contact:
   Send Updates To:
     format: string
     value: admin@example.com
-Email:
-  MailgunApiKey:
-    format: string
-    value:
 Name:
   Community:
     format: string
@@ -106,6 +102,39 @@ Services:
   Analytics:
     format: string
     value:
+Pusher:
+  App ID:
+    format: string
+    value:
+  App Key:
+    format: string
+    value:
+  Secret:
+    format: string
+    value:
+  API Scheme:
+    format: string
+    value: http
+  API Host:
+    format: string
+    value: api.pusherapp.com
+  API Port:
+    format: string
+    value: 80
+  WS Host:
+    format: string
+    value: ws.pusherapp.com
+  WS Port:
+    format: string
+    value: 80
+  WSS Port:
+    format: string
+    value: 443
+Facebook:
+  App ID:
+    format: string
+  App Secret:
+    format: string
 URL:
   Visitor:
     format: string

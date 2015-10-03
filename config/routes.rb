@@ -13,12 +13,7 @@ OneBody::Application.routes.draw do
 
   resources :people do
     collection do
-      get  :schema
-      get  :import
-      post :import
-      post :hashify
       post :batch
-      put  :import
     end
     member do
       get :favs
@@ -51,8 +46,6 @@ OneBody::Application.routes.draw do
 
   resources :families do
     collection do
-      get  :schema
-      post :hashify
       post :batch
       post :select
     end
@@ -96,7 +89,7 @@ OneBody::Application.routes.draw do
     end
     resource :stream
     resource :photo
-    resources :prayer_requests, :albums, :attachments
+    resources :prayer_requests, :albums
     resource :calendar
   end
 
@@ -130,6 +123,7 @@ OneBody::Application.routes.draw do
 
   resource :emails
 
+  get 'setup_email' => 'emails#create_route'
   put 'setup_email' => 'emails#create_route'
 
   resources :tags, only: :show
@@ -170,6 +164,11 @@ OneBody::Application.routes.draw do
     end
   end
 
+  resources :directory_maps do
+    collection do
+      get :family_locations
+    end
+  end
 
   get 'pages/*path' => 'pages#show_for_public', via: :get, as: :page_for_public
 
@@ -194,15 +193,13 @@ OneBody::Application.routes.draw do
         get :next
       end
     end
-    resources :syncs do
-      member do
-        post :create_items
-      end
-    end
     resources :deleted_people do
       collection do
         put :batch
       end
+    end
+    resources :imports do
+      patch :execute, on: :member
     end
     resources :updates, :admins, :membership_requests
     namespace :checkin do
@@ -215,14 +212,20 @@ OneBody::Application.routes.draw do
       resources :times do
         resources :groups
       end
-      resources :cards, :auths
+      resources :cards, :auths, :labels
     end
   end
 
+  resource :checkin, controller: 'checkin/checkins'
   namespace :checkin do
-    root to: 'interfaces#show'
-    resource :interface
+    resource :print
+    resource :printer
     resources :families, :people, :groups
   end
   resources :custom_reports
+
+  post '/pusher/auth_printer'    => 'pusher#auth_printer'
+  get '/auth/facebook/callback'  => 'sessions#create_from_external_provider'
+  post '/auth/facebook/callback' => 'sessions#create_from_external_provider'
+  get '/auth/:provider/setup'    => 'sessions#setup_omniauth'
 end

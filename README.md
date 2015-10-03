@@ -1,10 +1,12 @@
-# OneBody
-
 ![screnshots](https://farm8.staticflickr.com/7508/15498980049_3527e0817e_b.jpg)
 
-[![Install on DigitalOcean](http://installer.71m.us/button.svg)](http://installer.71m.us/install?url=https://github.com/churchio/onebody) [![Gitter](https://badges.gitter.im/Chat%20with%20us.svg)](https://gitter.im/churchio/onebody)
+# OneBody
 
-[Install Somewhere Else](https://github.com/churchio/onebody/wiki/Installation)
+[![Install on DigitalOcean](https://img.shields.io/badge/install-digital_ocean-479de4.svg)](http://installer.71m.us/install?url=https://github.com/churchio/onebody)
+[![Install on Amazon EC2](https://img.shields.io/badge/install-amazon_ec2-f78527.svg)](https://github.com/churchio/onebody/wiki/Amazon-AMI)
+[![Install on a hypervisor](https://img.shields.io/badge/install-vm-002f6b.svg)](https://github.com/churchio/onebody/wiki/Virtual-Appliance)
+[![Install elsewhere](https://img.shields.io/badge/install-other-999999.svg)](https://github.com/churchio/onebody/wiki/Installation)
+[![Chat with us](https://img.shields.io/badge/chat-slack-e01563.svg)](https://slackin-churchio.herokuapp.com/)
 
 OneBody is open-source, web-based social networking, email list, online directory, and lightweight document management software for churches.
 
@@ -32,9 +34,10 @@ To help fix a bug, first make sure it has a logged [issue](https://github.com/ch
 4. Run the test suite (see the "Tests" section lower in this file) to make sure you didn't break something. (This is kind of optional, since Travis CI will run the test suite when you create your Pull Request anyway.)
 4. Submit a Pull Request to get your bug fix merged!
 
-If you'd like to add an awesome new feature, please hop on [chat](https://gitter.im/churchio/onebody) to talk about what you want to do. We'd like to give you some guidance on approach, coding style, tests, etc.
+If you'd like to add an awesome new feature, please join our [Slack chat](https://slackin-churchio.herokuapp.com/) to talk about what you want to do. We'd like to give you some guidance on approach, coding style, tests, etc.
 
 [FAQs for Contributors](https://github.com/churchio/onebody/wiki/FAQs-for-Contributors)
+[Code of Conduct](https://github.com/churchio/onebody/blob/master/CONDUCT.md)
 
 ### Development Setup Using Vagrant
 
@@ -47,8 +50,8 @@ Operating System: Windows, Mac, or Linux
 3. Install [Git](http://git-scm.com/downloads).
    * If you're on Mac, you can use [GitHub for Mac](https://mac.github.com/).
    * If you're on Windows, you can use [GitHub for Windows](https://windows.github.com/).
-4. Clone the repository to your host machine: `git clone git://github.com/churchio/onebody.git`
-5. In your host terminal, change to the project directory: `cd onebody`
+4. Clone the repository to your host machine: `git clone git://github.com/churchio/onebody.git` (If you forked the project, clone from your own fork.)
+5. In your terminal, change to the project directory: `cd onebody`
 6. Run vagrant: `vagrant up`
 
 Now visit the site running in development mode at http://localhost:8080.
@@ -61,7 +64,7 @@ Check out [Using Vagrant](https://github.com/churchio/onebody/wiki/Using-Vagrant
 
 Operating System: Mac or Linux (See Vagrant above if you're on Windows)
 
-1. Install Ruby 2.1.5 or higher (we recommend you use [RVM](https://rvm.io/)).
+1. Install Ruby 2.2.2 or higher (we recommend you use [rbenv](https://github.com/sstephenson/rbenv) or [RVM](https://rvm.io/)).
 2. Install MySQL.
 3. Install Git.
 4. Install ImageMagick.
@@ -88,13 +91,12 @@ rspec
 If you don't have a test database yet, create it like you did the dev database:
 
 ```
-rake db:create db:schema:load
+RAILS_ENV=test rake db:create db:schema:load
 ```
 
 ## Get Help
 
-* [Gitter Chat](https://gitter.im/churchio/onebody)
-* IRC channel #church.io on Freenode (try the [web-based IRC client](https://webchat.freenode.net/?channels=#church.io))
+* [Slack Chat](https://slackin-churchio.herokuapp.com/)
 * [Wiki](http://wiki.github.com/churchio/onebody)
 * [Google Group](http://groups.google.com/group/churchio)
 * [Help Guides](http://church.io/onebody/help)

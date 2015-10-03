@@ -12,6 +12,7 @@ en:
     checkin: "Check-in"
     checkin_sub:
       times: "Times"
+      labels: "Labels"
     directory: "Directory"
     directory_sub:
       business: "Business Directory"
@@ -31,6 +32,7 @@ en:
       new_count:
         one: "1 new"
         other: "%{count} new"
+    imports: "Imports"
     messages: "Messages"
     news: "News"
     notes: "Notes"
@@ -45,7 +47,6 @@ en:
       relationships: "Relationships"
       show: "View Profile"
     report: "Reporting"
-    syncs: "Syncs"
     verses: "Verses"
     tasks: "Tasks"
     tasks_sub:

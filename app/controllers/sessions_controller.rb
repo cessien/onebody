@@ -3,6 +3,8 @@ class SessionsController < ApplicationController
   before_filter :check_ssl, except: %w(destroy)
   before_filter :check_too_many_signin_failures, only: %w(create)
 
+  helper_method :has_social_logins, :support_facebook_login
+
   layout 'signed_out'
 
   def show
@@ -14,18 +16,18 @@ class SessionsController < ApplicationController
     redirect_to(new_setup_path) unless Person.any?
   end
 
+  def create_from_external_provider
+    auth = request.env["omniauth.auth"]
+    @person = Person.where(
+      :provider => auth['provider'],
+      :uid => auth['uid'].to_s).first || Signup.save_with_omniauth(auth)
+    redirect_after_authentication
+  end
+
   # sign in
   def create
     @person = Person.authenticate(params[:email], params[:password])
-    if @person && !@person.can_sign_in?
-      redirect_to page_for_public_path('system/unauthorized')
-    elsif @person
-      login_success
-    elsif @person == false
-      login_auth_fail
-    else
-      login_not_found
-    end
+    redirect_after_authentication
   end
 
   # sign out
@@ -34,15 +36,51 @@ class SessionsController < ApplicationController
     redirect_to root_path
   end
 
+  def has_social_logins
+    support_facebook_login
+  end
+
+  def support_facebook_login
+    !!Setting.get(:facebook, :app_id) and !!Setting.get(:facebook, :app_secret)
+  end
+
+  def setup_omniauth
+    provider = params['provider']
+    if provider == "facebook" and support_facebook_login
+      env['omniauth.strategy'].options[:client_id] = Setting.get(:facebook, :app_id)
+      env['omniauth.strategy'].options[:client_secret] = Setting.get(:facebook, :app_secret)
+      env['omniauth.strategy'].options[:scope] = 'email,read_stream'
+    end
+    render :text => "Setup complete.", :status => 404
+  end
+
   private
+
+  STICKY_SESSION_LENGTH = 60.days
 
   def login_success
     setup_session!
-    sticky_session! if params[:remember_me]
-    if @person.full_access?
+    sticky_session!(STICKY_SESSION_LENGTH) if params[:remember_me]
+    if @person.active?
       full_access_redirect
     else
       redirect_to @person
+    end
+  end
+
+  STICKY_SESSION_LENGTH_FOR_CHECKIN = 365.days
+
+  def login_success_for_checkin
+    if @person.admin?(:manage_checkin)
+      session[:checkin_logged_in_id] = @person.id
+      sticky_session!(STICKY_SESSION_LENGTH_FOR_CHECKIN)
+      if params[:from].present?
+        redirect_to safe_redirect_path(params[:from])
+      else
+        redirect_to checkin_path
+      end
+    else
+      redirect_to action: 'new'
     end
   end
 
@@ -96,18 +134,32 @@ class SessionsController < ApplicationController
     false
   end
 
-  STICKY_SESSION_LENGTH = 60.days
-
   def setup_session!
     session[:logged_in_id] = @person.id
     session[:logged_in_name] = @person.name
     session[:ip_address] = request.remote_ip
   end
 
-  def sticky_session!
+  def sticky_session!(length = 30.days)
     request.cookie_jar['_session_id'] = {
       value: request.cookie_jar['_session_id'],
-      expires: STICKY_SESSION_LENGTH.from_now
+      expires: length.from_now
     }
+  end
+
+  def redirect_after_authentication
+    if @person && !@person.able_to_sign_in?
+      redirect_to page_for_public_path('system/unauthorized')
+    elsif @person
+      if params[:for] == 'checkin'
+        login_success_for_checkin
+      else
+        login_success
+      end
+    elsif @person == false
+      login_auth_fail
+    else
+      login_not_found
+    end
   end
 end

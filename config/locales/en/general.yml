@@ -40,9 +40,6 @@ en:
     MM: "MM"
     YYYY: "YYYY"
 
-  errors:
-    format: "%{message}"
-
   activemodel:
     errors:
       models:
@@ -66,20 +63,30 @@ en:
               blank: Mobile phone cannot be blank.
 
   activerecord:
+    errors:
+      messages:
+        blank: "%{attribute} cannot be blank"
     attributes:
       album:
         name: "Name"
         description: "Description"
+      checkin_label:
+        name: "Name"
+        description: "Description"
+        xml: "Label XML"
+        xml_file: "Label XML File"
       document:
         name: "Name"
         description: "Description"
         file: "File"
+        files: "Files"
         folder_id: "Folder"
       document_folder:
         name: "Name"
         description: "Description"
         folder_id: "Parent Folder"
-        hidden: "Hidden"
+        hidden: "Hide/Archive this folder"
+        groups: "Only share with these groups"
       family:
         address1: "Address Line 1"
         address2: "Address Line 2 (optional)"
@@ -102,6 +109,7 @@ en:
         last_name: "Last Name"
         mobile_phone: "Mobile Phone"
         primary_emailer: "Primary email account holder"
+        status: "Status"
         suffix: "Suffix"
         twitter: "Twitter Username"
         work_phone: "Work Phone"
@@ -128,14 +136,14 @@ en:
         parents_of: "Child Group"
         hidden: "Hidden (Archived) Group"
         has_tasks: "Tasks"
+      note:
+        title: "Title"
+        body: "Body"
       prayer_request:
         answer: "Answer"
         answered_at: "Date Answered"
         person_id: "Person needing prayer"
         request: "Request"
-      note:
-        title: "Title"
-        body: "Body"
       task:
         name: Task
         description: Description
@@ -162,6 +170,17 @@ en:
               blank: The attendance record must specify a date and time.
             group_id:
               blank: The attendance record must be associated with a group.
+        checkin_label:
+          attributes:
+            name:
+              blank: "You must enter a name."
+            xml:
+              blank: "You must paste the label XML."
+        checkin_time:
+          attributes:
+            campus:
+              blank: "You must select a campus."
+              exclusion: "You must select a campus."
         document:
           attributes:
             file:
@@ -371,10 +390,10 @@ en:
             other_name:
               blank: You must specify the relationship type.
               taken: This relationship already exists.
-            person_id:
+            person:
               blank: The relationship must be associated with a person.
-            related_id:
-              blank: The relationship must be associated with a person.
+            related:
+              blank: The relationship must be associated with a second person.
         report:
           attributes:
             definition:
@@ -417,10 +436,6 @@ en:
 
   application:
     api_access: You must be a super administrator to use the API.
-    mailgun_route_found: The route already exists.
-    mailgun_route_created: The route has been created.
-    mailgun_apikey_notfound: Please check the mailgun api key.
-    mailgun_route_error: There was an error while trying to create the route.
     no_default_site: No Default site found.
     no_site_configured: "There is no site configured at this address: %{host}"
     settings_reloaded: Settings reloaded.

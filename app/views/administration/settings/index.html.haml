@@ -12,8 +12,6 @@
     = section_tab(t('admin.settings.formats_heading'), :formats)
     = section_tab(t('admin.settings.privacy_heading'), :privacy)
     = section_tab(t('admin.settings.services_heading'), :services)
-    - if @logged_in.super_admin?
-      = section_tab(t('admin.settings.advanced.heading'), :advanced)
 
   .tab-content
     .tab-pane.active#naming
@@ -48,6 +46,7 @@
       = setting_row('Features', 'Checkin')
       = setting_row('Features', 'Documents')
       = setting_row('Features', 'Business Directory')
+      = setting_row('Features', 'Edit Legacy Ids')
       .form-group
         .col-sm-offset-2.col-sm-10
           = button_tag t('save_changes'), class: 'btn btn-success'
@@ -75,7 +74,7 @@
         .col-sm-offset-2.col-sm-10
           = button_tag t('save_changes'), class: 'btn btn-success'
     .tab-pane#locale
-      = setting_row('System', 'Language', options: ONEBODY_LOCALES.invert)
+      = setting_row('System', 'Language', options: ONEBODY_LOCALES.invert, description: t('admin.settings.System.Language.description', url: 'https://github.com/churchio/onebody/wiki/Translations').html_safe)
       = setting_row('System', 'Time Zone', options: @timezones)
       = setting_row('System', 'Default Country', options: country_options)
       = setting_row('System', 'Map Zoom Level', options: (12..16).to_a)
@@ -119,13 +118,27 @@
           = text_field_tag 'email_host', Site.current.email_host, class: 'form-control'
           %span.help-block
             = t('admin.settings.Email.Host.description')
-      = setting_row('Email', 'MailgunApiKey')
+      .form-group
+        .col-sm-offset-2.col-sm-10
+          %h3= t('admin.pusher.heading')
+          %p= t('admin.pusher.intro_html')
+      = setting_row('Pusher', 'App ID')
+      = setting_row('Pusher', 'App Key')
+      = setting_row('Pusher', 'Secret')
+      = setting_row('Pusher', 'API Scheme')
+      = setting_row('Pusher', 'API Host')
+      = setting_row('Pusher', 'API Port')
+      = setting_row('Pusher', 'WS Host')
+      = setting_row('Pusher', 'WS Port')
+      = setting_row('Pusher', 'WSS Port')
+      .form-group
+        .col-sm-offset-2.col-sm-10
+          %h3= t('admin.facebook.heading')
+          %p
+            %strong EXPERIMENTAL
+            = t('admin.facebook.intro_html')
+      = setting_row('Facebook', 'App ID')
+      = setting_row('Facebook', 'App Secret')
       .form-group
         .col-sm-offset-2.col-sm-10
           = button_tag t('save_changes'), class: 'btn btn-success'
-    - if @logged_in.super_admin?
-      .tab-pane#advanced
-        %p= t('admin.settings.advanced.mailgun')
-        %p= link_to t('admin.settings.mailgun'), setup_email_path, method: 'put', title: t('admin.settings.mailgun_message'), class: 'btn btn-warning'
-        %p= t('admin.settings.advanced.intro')
-        %p= link_to t('admin.settings.reload'), reload_administration_settings_path, method: 'put', title: t('admin.settings.reload_message'), class: 'btn btn-warning'
